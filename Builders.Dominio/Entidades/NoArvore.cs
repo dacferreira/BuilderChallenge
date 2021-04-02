@@ -38,7 +38,14 @@
 
         public void AdicionarDireito(NoArvore noDireito)
         {
+            this.IdNoDireito = noDireito.Id;
             this.NoDireito = noDireito;
+        }
+
+        public void AdicionarEsquerdo(NoArvore noEsquerdo)
+        {
+            this.IdNoEsquerdo= noEsquerdo.Id;
+            this.NoEsquerdo = noEsquerdo;
         }
         public void IniciarEntidade(int numero)
         {

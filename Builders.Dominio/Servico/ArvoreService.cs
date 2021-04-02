@@ -53,21 +53,31 @@ namespace Builders.Dominio.Servico
                 if (ehNoEsquerdo)
                 {
                     novoItem.Altura = Math.Max(novoItem.ObterAltura(), noArvore.NoDireito.ObterAltura()) + 1;
-                    var _arv = new ArvoreBusca { Raiz = novoItem };
-                    this._repositorio.Inserir(_arv);
-                    
-                    noArvore.IdNoEsquerdo = novoItem.Id;
-                    this._noArvoreRepositorio.Atualizar(noArvore);
+
+                    InserirNoArvore(noArvore, novoItem, false);
                 }
                 else if (ehNoDireito)
                 {
                     novoItem.Altura = Math.Max(noArvore.NoEsquerdo.ObterAltura(), novoItem.ObterAltura()) + 1;
-                    var _arv = new ArvoreBusca { Raiz = novoItem };
-                    this._repositorio.Inserir(_arv);
-
-                    noArvore.IdNoDireito = novoItem.Id;
-                    this._noArvoreRepositorio.Atualizar(noArvore);
+                    InserirNoArvore(noArvore, novoItem);
                 }
+            }
+        }
+
+        private void InserirNoArvore(NoArvore noArvore, NoArvore novoItem, bool noDireito = true)
+        {
+            var _arv = new ArvoreBusca { Raiz = novoItem };
+
+            this._repositorio.Inserir(_arv);
+
+            var _raizAlterado = this._noArvoreRepositorio.ObterPorId(noArvore.Id);
+            if (_raizAlterado != null)
+            {
+                if(noDireito)
+                _raizAlterado.AdicionarDireito(novoItem);
+                else
+                    _raizAlterado.AdicionarEsquerdo(novoItem);
+                this._noArvoreRepositorio.Atualizar(novoItem);
             }
         }
 
